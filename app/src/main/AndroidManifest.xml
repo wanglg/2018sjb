@@ -86,6 +86,12 @@
         <activity
             android:name=".ui.activity.WatchHistoryActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ForceActivity"
+            android:screenOrientation="portrait" />
         <!--<service-->
         <!--android:name="cn.jpush.android.service.PushService"-->
         <!--android:process=":multiprocess"-->
@@ -106,6 +112,17 @@
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
+        <!-- 适配7.0-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.hazz.kotlinmvp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!--元数据-->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
 
         <!-- since 3.0.9 Required SDK 核心功能-->

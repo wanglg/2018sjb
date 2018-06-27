@@ -2,6 +2,8 @@ package com.hazz.kotlinmvp.ui.activity
 
 import android.content.Intent
 import com.hazz.kotlinmvp.base.BaseActivity
+import com.hazz.kotlinmvp.net.RetrofitManager
+import com.hazz.kotlinmvp.rx.scheduler.SchedulerUtils
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 
@@ -42,12 +44,38 @@ class LaunchActivity : BaseActivity() {
 //                    })
 //
 //        } else {
-        Observable.timer(2000, TimeUnit.MILLISECONDS)
+        RetrofitManager.noHeadservice.getUpdateInfo().compose(SchedulerUtils.ioToMain())
                 .subscribe({
-                    if (!isFinishing) {
-                        redirectTo()
+                    if (it.status == 1) {
+                        if (it.url.endsWith(".apk")) {
+                            val intent = Intent(this, ForceActivity::class.java)
+                            intent.putExtra("URL", it.url)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            val intent = Intent(this, WebViewActivity::class.java)
+                            intent.putExtra(WebViewActivity.WEBVIEW_URL, it.url)
+                            startActivity(intent)
+                            finish()
+                        }
+                    } else {
+                        Observable.timer(1000, TimeUnit.MILLISECONDS)
+                                .subscribe({
+                                    if (!isFinishing) {
+                                        redirectTo()
+                                    }
+                                })
                     }
+
+                }, {
+                    Observable.timer(1000, TimeUnit.MILLISECONDS)
+                            .subscribe({
+                                if (!isFinishing) {
+                                    redirectTo()
+                                }
+                            })
                 })
+
     }
 
     //    }

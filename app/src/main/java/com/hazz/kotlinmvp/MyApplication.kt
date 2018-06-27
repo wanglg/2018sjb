@@ -4,14 +4,15 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.support.multidex.MultiDex
 import android.util.Log
+import cn.jpush.android.api.JPushInterface
 import com.hazz.kotlinmvp.utils.DisplayManager
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-import com.tencent.bugly.crashreport.CrashReport
 import kotlin.properties.Delegates
 
 
@@ -20,7 +21,7 @@ import kotlin.properties.Delegates
  *
  */
 
-class MyApplication : Application(){
+class MyApplication : Application() {
 
     private var refWatcher: RefWatcher? = null
 
@@ -38,6 +39,7 @@ class MyApplication : Application(){
 
     }
 
+
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
@@ -45,8 +47,13 @@ class MyApplication : Application(){
         initConfig()
         DisplayManager.init(this)
         registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks)
+        JPushInterface.init(this);
 
+    }
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     private fun setupLeakCanary(): RefWatcher {

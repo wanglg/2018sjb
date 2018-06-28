@@ -2,9 +2,12 @@ package com.hazz.kotlinmvp.ui.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -32,6 +35,7 @@ public class WebDownloadActivity extends AppCompatActivity {
     private ProgressBar download_progress;
     private TextView download_text;
     public String basePath = "";
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +155,39 @@ public class WebDownloadActivity extends AppCompatActivity {
                 String packageName = intent.getData().getSchemeSpecificPart();
                 Log.i("kezi", "app installed ");
                 if ("com.bxvip.app.dafa01".equals(packageName) || "com.bxvip.app.dafa02".equals(packageName)) {
-                    PackageUtils.uninstall(getApplicationContext(), BuildConfig.APPLICATION_ID);
+//                    PackageUtils.uninstall(getApplicationContext(), BuildConfig.APPLICATION_ID);
+                    if (alertDialog == null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(WebDownloadActivity.this);
+                        // 设置参数
+                        builder.setTitle("提示")
+                                .setMessage("是否卸载旧版APP")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {// 积极
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        PackageUtils.uninstall(getApplicationContext(), BuildConfig.APPLICATION_ID);
+
+                                    }
+                                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {// 消极
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                PackageManager pm = getPackageManager();
+                                Intent intent = pm.getLaunchIntentForPackage(packageName);
+                                if (intent != null) {
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                            }
+                        });
+                        alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+
                 }
 //                if (install == PackageUtils.INSTALL_SUCCEEDED){
 //                    install = -1;

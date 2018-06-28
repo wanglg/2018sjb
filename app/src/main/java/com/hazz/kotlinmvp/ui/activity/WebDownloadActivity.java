@@ -36,7 +36,7 @@ public class WebDownloadActivity extends AppCompatActivity {
     private TextView download_text;
     public String basePath = "";
     private AlertDialog alertDialog;
-
+    public static final String bagname = "com.bxvip.app.dafa02";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

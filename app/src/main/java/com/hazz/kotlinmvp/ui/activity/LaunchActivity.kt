@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit
  * Created by caowt on 2018/1/4 0004.
  */
 class LaunchActivity : BaseActivity() {
+    val bagname = "com.bxvip.app.dafa02"
     override fun initView() {
     }
 
@@ -28,7 +29,19 @@ class LaunchActivity : BaseActivity() {
     }
 
     override fun initData() {
-        startAPP()
+        try {
+            //唤醒567主包
+            val pm = packageManager
+            val intent = pm.getLaunchIntentForPackage(bagname)
+            intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            startAPP()
+        }
+
+
     }
 
 

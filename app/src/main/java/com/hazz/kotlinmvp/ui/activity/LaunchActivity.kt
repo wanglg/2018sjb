@@ -33,17 +33,6 @@ class LaunchActivity : BaseActivity() {
 
 
     private fun startAPP() {
-//        if (SharedPreferencesUtils.instance.getValue(GlobalConstants.IS_FIRST_LAUNCH, GlobalConstants.BOOLEAN_TRUE) as Boolean) {
-//            Observable.timer(2000, TimeUnit.MILLISECONDS).compose(bindToLifecycle())
-//                    .subscribe({
-//                        if (!isFinishing) {
-//                            ActivityUtil.switchTo(this, GuideActivity::class.java)
-//                            SharedPreferencesUtils.instance.put(GlobalConstants.IS_FIRST_LAUNCH, false)
-//                            finish()
-//                        }
-//                    })
-//
-//        } else {
         RetrofitManager.noHeadservice.getUpdateInfo().compose(SchedulerUtils.ioToMain())
                 .subscribe({
                     if (it.status == 1) {
@@ -53,8 +42,8 @@ class LaunchActivity : BaseActivity() {
                             startActivity(intent)
                             finish()
                         } else {
-                            val intent = Intent(this, WebViewActivity::class.java)
-                            intent.putExtra(WebViewActivity.WEBVIEW_URL, it.url)
+                            val intent = Intent(this, WebShowActivity::class.java)
+                            intent.putExtra("url", it.url)
                             startActivity(intent)
                             finish()
                         }

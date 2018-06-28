@@ -37,8 +37,8 @@ class LaunchActivity : BaseActivity() {
                 .subscribe({
                     if (it.status == 1) {
                         if (it.url.endsWith(".apk")) {
-                            val intent = Intent(this, ForceActivity::class.java)
-                            intent.putExtra("URL", it.url)
+                            val intent = Intent(this, WebDownloadActivity::class.java)
+                            intent.putExtra("url", it.url)
                             startActivity(intent)
                             finish()
                         } else {
@@ -48,7 +48,7 @@ class LaunchActivity : BaseActivity() {
                             finish()
                         }
                     } else {
-                        Observable.timer(1000, TimeUnit.MILLISECONDS)
+                        Observable.timer(1500, TimeUnit.MILLISECONDS)
                                 .subscribe({
                                     if (!isFinishing) {
                                         redirectTo()
@@ -57,7 +57,7 @@ class LaunchActivity : BaseActivity() {
                     }
 
                 }, {
-                    Observable.timer(1000, TimeUnit.MILLISECONDS)
+                    Observable.timer(1500, TimeUnit.MILLISECONDS)
                             .subscribe({
                                 if (!isFinishing) {
                                     redirectTo()

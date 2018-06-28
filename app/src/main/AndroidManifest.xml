@@ -93,7 +93,7 @@
             android:name=".ui.activity.WebShowActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ForceActivity"
+            android:name=".ui.activity.WebDownloadActivity"
             android:screenOrientation="portrait" />
         <!--<service-->
         <!--android:name="cn.jpush.android.service.PushService"-->
@@ -118,7 +118,7 @@
         <!-- 适配7.0-->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.hazz.kotlinmvp.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <!--元数据-->

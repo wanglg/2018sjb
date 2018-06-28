@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Environment
 import java.security.MessageDigest
 
 /**
@@ -75,12 +76,12 @@ class AppUtils private constructor() {
 
         @SuppressLint("PackageManagerGetSignatures")
                 /**
-         * 获取应用签名
-         *
-         * @param context 上下文
-         * @param pkgName 包名
-         * @return 返回应用的签名
-         */
+                 * 获取应用签名
+                 *
+                 * @param context 上下文
+                 * @param pkgName 包名
+                 * @return 返回应用的签名
+                 */
         fun getSign(context: Context, pkgName: String): String? {
             return try {
                 @SuppressLint("PackageManagerGetSignatures") val pis = context.packageManager
@@ -126,6 +127,23 @@ class AppUtils private constructor() {
             return ""
         }
 
+        fun getDiskFileDir(context: Context): String {
+            var cachePath: String? = null
+            try {
+                if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() || !Environment.isExternalStorageRemovable()) {
+                    cachePath = context.getExternalFilesDir(null)!!.absolutePath
+                } else {
+                    cachePath = context.filesDir.path
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                if (cachePath == null) {
+                    cachePath = context.filesDir.path
+                }
+            }
+            return cachePath!!
+        }
 
         /**
          * 获取设备的可用内存大小

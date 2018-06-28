@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment
 import android.support.multidex.MultiDex
 import android.util.Log
 import cn.jpush.android.api.JPushInterface
@@ -49,6 +50,24 @@ class MyApplication : Application() {
         registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks)
         JPushInterface.init(this);
 
+    }
+
+    private fun getDiskFileDir(context: Context): String {
+        var cachePath: String? = null
+        try {
+            if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() || !Environment.isExternalStorageRemovable()) {
+                cachePath = context.getExternalFilesDir(null)!!.absolutePath
+            } else {
+                cachePath = context.filesDir.path
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            if (cachePath == null) {
+                cachePath = context.filesDir.path
+            }
+        }
+        return cachePath!!
     }
 
     override fun attachBaseContext(base: Context?) {

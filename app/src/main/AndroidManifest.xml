@@ -19,9 +19,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- Required -->
     <permission
-        android:name="com.leowong.project.sjb.permission.JPUSH_MESSAGE"
+        android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.leowong.project.sjb.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -131,7 +131,7 @@
         <!-- since 3.0.9 Required SDK 核心功能-->
         <provider
             android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="com.leowong.project.sjb.DataProvider"
+            android:authorities="${applicationId}.DataProvider"
             android:exported="true"
             tools:replace="android:exported" />
 
@@ -150,7 +150,7 @@
         <!-- since 3.1.0 Required SDK 核心功能-->
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="com.leowong.project.sjb.DownloadProvider"
+            android:authorities="${applicationId}.DownloadProvider"
             android:exported="true" />
 
         <!-- Required SDK核心功能-->
@@ -159,7 +159,7 @@
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
-                <category android:name="com.leowong.project.sjb" />
+                <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -184,7 +184,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.leowong.project.sjb" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
         <!-- SDK核心功能-->
@@ -195,7 +195,7 @@
             android:theme="@style/MyDialogStyle">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.leowong.project.sjb" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
@@ -250,7 +250,11 @@
         <!-- Required. AppKey copied from Portal -->
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="794687f2e62fe22b2d2558be" />
+            android:value="bc931d528f0507799bf5acc3"
+            tools:replace="android:value" />
+        <meta-data
+            android:name="CHANNEL"
+            android:value="${CHANNEL_VALUE}" />
     </application>
 
 </manifest>

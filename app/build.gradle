@@ -9,19 +9,20 @@ apply plugin: 'kotlin-kapt'  //kapt3插件
 android {
     signingConfigs {
         config {
-            keyAlias 'ktmp'
-            keyPassword 'ktmp123456'
-            storeFile file('../ktmp.jks')
-            storePassword 'ktmp123456'
+            keyAlias 'key0'
+            keyPassword '1qaz2wsx'
+            storeFile file('../2018sjb.jks')
+            storePassword '1qaz2wsx'
         }
     }
-    compileSdkVersion 26
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     defaultConfig {
-        applicationId "com.leowong.project.sjb"
+        applicationId "com.leowong.project.sjb2018"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 0
-        versionName "1.0.0"
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        flavorDimensions "versionCode"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -40,9 +41,9 @@ android {
             abiFilters 'armeabi', 'armeabi-v7a'
         }
         manifestPlaceholders = [
-                JPUSH_PKGNAME : applicationId,
-                JPUSH_APPKEY : "794687f2e62fe22b2d2558be", //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                JPUSH_PKGNAME: applicationId,
+//                JPUSH_APPKEY : "bc931d528f0507799bf5acc3", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
     buildTypes {
@@ -60,23 +61,31 @@ android {
         }
 
     }
-    // 自定义输出配置
+//    // 自定义输出配置
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "2018sjb_v${variant.versionName}_${variant.name}.apk"
+//        }
+//    }
+    //指定打包后应用名称
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "2018sjb_v${variant.versionName}_${variant.name}.apk"
+            outputFileName = "2018sjb_${variant.buildType.name}_${variant.productFlavors[0].name}_v${variant.versionName}.apk"
         }
     }
-
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
     productFlavors {
-
+//        "a360" {}
+        "baidu" {}
     }
 
 
-
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
+    }
     dexOptions {
         jumboMode true
     }
